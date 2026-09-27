@@ -1,0 +1,16 @@
+import { Page, Locator } from '@playwright/test';
+
+export class NavBar {
+    readonly page: Page;
+    readonly logoutButton: Locator;
+
+    constructor(page: Page) {
+        this.page = page;
+        this.logoutButton = page.getByRole('button', { name: 'Logout' });
+    
+    }
+
+    async logout() {
+        await this.logoutButton.click();
+    }
+}
