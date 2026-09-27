@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/login-page';
+import { expect } from '@playwright/test';
+import { test } from '../fixtures/login-fixture';
 
 class LoginDetails {
   readonly email: string;
@@ -12,25 +12,18 @@ class LoginDetails {
 }
 
 test.describe('Login page', () => {
-  let loginPage: LoginPage;
-
-  test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-    await loginPage.goto();
-  });
-
   test('login page loads', async ({ page }) => {
     await expect(page).toHaveTitle(/EventHub/);
     await expect(page).toHaveURL('/login');
   });
 
-  test('shows the sign in form', async () => {
+  test('shows the sign in form', async ({ loginPage }) => {
     await expect(loginPage.emailInput).toBeVisible();
     await expect(loginPage.passwordInput).toBeVisible();
     await expect(loginPage.signInButton).toBeVisible();
   });
 
-  test('sign in button responds to form input', async () => {
+  test('sign in button responds to form input', async ({ loginPage }) => {
     const details = new LoginDetails('password1');
 
     await expect(loginPage.signInButton).toBeEnabled();
@@ -42,7 +35,7 @@ test.describe('Login page', () => {
     await expect(loginPage.signInButton).toBeEnabled();
   });
 
-  test('shows an error when only the email is filled', async ({ page }) => {
+  test('shows an error when only the email is filled', async ({ page, loginPage }) => {
     await loginPage.emailInput.fill('omar@test.com');
     await loginPage.signInButton.click();
 
