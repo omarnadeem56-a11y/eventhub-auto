@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/login-page';
 
 class LoginDetails {
   readonly email: string;
@@ -11,8 +12,11 @@ class LoginDetails {
 }
 
 test.describe('Login page', () => {
+  let loginPage: LoginPage;
+
   test.beforeEach(async ({ page }) => {
-    await page.goto('/login');
+    loginPage = new LoginPage(page);
+    await loginPage.goto();
   });
 
   test('login page loads', async ({ page }) => {
@@ -20,29 +24,27 @@ test.describe('Login page', () => {
     await expect(page).toHaveURL('/login');
   });
 
-  test('shows the sign in form', async ({ page }) => {
-    await expect(page.getByLabel('Email')).toBeVisible();
-    await expect(page.getByLabel('Password')).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Sign In' })).toBeVisible();
+  test('shows the sign in form', async () => {
+    await expect(loginPage.emailInput).toBeVisible();
+    await expect(loginPage.passwordInput).toBeVisible();
+    await expect(loginPage.signInButton).toBeVisible();
   });
 
-  test('sign in button responds to form input', async ({ page }) => {
+  test('sign in button responds to form input', async () => {
     const details = new LoginDetails('password1');
 
-    await expect(page.getByRole('button', { name: 'Sign In' })).toBeEnabled();
+    await expect(loginPage.signInButton).toBeEnabled();
 
-    await page.getByLabel('Email').fill(details.email);
-    await expect(page.getByLabel('Email')).toHaveValue(details.email);
+    await loginPage.fillForm(details.email, details.password);
+    await expect(loginPage.emailInput).toHaveValue(details.email);
+    await expect(loginPage.passwordInput).toHaveValue(details.password);
 
-    await page.getByLabel('Password').fill(details.password);
-    await expect(page.getByLabel('Password')).toHaveValue(details.password);
-
-    await expect(page.getByRole('button', { name: 'Sign In' })).toBeEnabled();
+    await expect(loginPage.signInButton).toBeEnabled();
   });
 
   test('shows an error when only the email is filled', async ({ page }) => {
-    await page.getByLabel('Email').fill('omar@test.com');
-    await page.getByRole('button', { name: 'Sign In' }).click();
+    await loginPage.emailInput.fill('omar@test.com');
+    await loginPage.signInButton.click();
 
     await expect(page.getByText('Password must be at least 6 characters')).toBeVisible();
     await expect(page).toHaveURL(/\/login/);
