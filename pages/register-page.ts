@@ -9,9 +9,9 @@ export class RegisterPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.emailInput = page.getByLabel('Email');
-    this.passwordInput = page.getByLabel('Password', { exact: true });
-    this.confirmPasswordInput = page.getByLabel('Confirm Password');
+    this.emailInput = page.getByTestId('register-email');
+    this.passwordInput = page.getByTestId('register-password');
+    this.confirmPasswordInput = page.getByRole('textbox', { name: 'Repeat your password' });
     this.registerButton = page.getByTestId('register-btn');
   }
 
