@@ -24,13 +24,15 @@ test.describe('Register page', () => {
   });
 
   test('registers a new user', async ({ page }) => {
+    const password = 'Lantern7^Quiet!Fig';
     const user = {
       email: `omar+${Date.now()}@test.com`,
-      password: 'Lantern7^Quiet!Fig',
-      confirmPassword: 'Lantern7^Quiet!Fig',
+      password: password,
+      confirmPassword: password,
     };
     await registerPage.register(user);
     await expect(page).toHaveURL('/');
+    await expect(page.getByText('Logout')).toBeVisible();
 
 
   });

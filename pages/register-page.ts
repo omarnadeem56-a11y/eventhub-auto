@@ -11,7 +11,7 @@ export class RegisterPage {
     this.page = page;
     this.emailInput = page.getByTestId('register-email');
     this.passwordInput = page.getByTestId('register-password');
-    this.confirmPasswordInput = page.getByRole('textbox', { name: 'Repeat your password' });
+    this.confirmPasswordInput = page.getByPlaceholder('Repeat your password');
     this.registerButton = page.getByTestId('register-btn');
   }
 
