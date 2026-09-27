@@ -12,7 +12,7 @@ class LoginDetails {
 }
 
 test.describe('Login page', () => {
-  test('login page loads', async ({ page }) => {
+  test('login page loads', async ({ page, loginPage: _ }) => {
     await expect(page).toHaveTitle(/EventHub/);
     await expect(page).toHaveURL('/login');
   });

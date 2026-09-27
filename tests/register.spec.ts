@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { test } from '../fixtures/register-fixture';
 
 test.describe('Register page', () => {
-  test('register page loads', async ({ page }) => {
+  test('register page loads', async ({ page, registerPage: _ }) => {
     await expect(page).toHaveTitle(/EventHub/);
     await expect(page).toHaveURL('/register');
   });
