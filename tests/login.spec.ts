@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test } from '../fixtures/login-fixture';
+import { test } from '../fixtures';
 
 class LoginDetails {
   readonly email: string;

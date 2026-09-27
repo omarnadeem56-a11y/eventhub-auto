@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test } from '../fixtures/register-fixture';
+import { test } from '../fixtures';
 
 test.describe('Register page', () => {
   test('register page loads', async ({ page, registerPage: _ }) => {
