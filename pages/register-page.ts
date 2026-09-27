@@ -10,9 +10,9 @@ export class RegisterPage {
   constructor(page: Page) {
     this.page = page;
     this.emailInput = page.getByLabel('Email');
-    this.passwordInput = page.getByLabel('Password');
+    this.passwordInput = page.getByLabel('Password', { exact: true });
     this.confirmPasswordInput = page.getByLabel('Confirm Password');
-    this.registerButton = page.getByRole('button', { name: 'Register' });
+    this.registerButton = page.getByTestId('register-btn');
   }
 
   async goto() {
@@ -23,5 +23,6 @@ export class RegisterPage {
     await this.emailInput.fill(user.email);
     await this.passwordInput.fill(user.password);
     await this.confirmPasswordInput.fill(user.confirmPassword);
+    await this.registerButton.click();
   }
 }

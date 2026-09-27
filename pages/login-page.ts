@@ -12,6 +12,7 @@ export class LoginPage {
     this.passwordInput = page.getByLabel('Password');
     this.signInButton = page.getByRole('button', { name: 'Sign In' });
   }
+  
 
   async goto() {
     await this.page.goto('/login');
