@@ -2,6 +2,10 @@ import { expect } from '@playwright/test';
 import { test } from '../fixtures';
 
 test.describe('Register page', () => {
+  test.beforeEach(async ({ registerPage }) => {
+    await registerPage.goto();
+  });
+
   test('register page loads', async ({ page, registerPage: _ }) => {
     await expect(page).toHaveTitle(/EventHub/);
     await expect(page).toHaveURL('/register');
@@ -14,7 +18,7 @@ test.describe('Register page', () => {
     await expect(registerPage.registerButton).toBeVisible();
   });
 
-  test('registers a new user', async ({ page, registerPage }) => {
+  test('registers a new user', async ({ page, registerPage, navBar }) => {
     const password = 'Lantern7^Quiet!Fig';
     const user = {
       email: `omar+${Date.now()}@test.com`,
@@ -23,6 +27,6 @@ test.describe('Register page', () => {
     };
     await registerPage.register(user);
     await expect(page).toHaveURL('/');
-    await expect(page.getByText('Logout')).toBeVisible();
+    await expect(navBar.logoutButton).toBeVisible();
   });
 });
