@@ -1,4 +1,5 @@
 import { Page, Locator } from '@playwright/test';
+import { NewUser } from '../types/user';
 
 export class RegisterPage {
   readonly page: Page;
@@ -19,7 +20,7 @@ export class RegisterPage {
     await this.page.goto('/register');
   }
 
-  async register(user: { email: string; password: string; confirmPassword: string }) {
+  async register(user: NewUser) {
     await this.emailInput.fill(user.email);
     await this.passwordInput.fill(user.password);
     await this.confirmPasswordInput.fill(user.confirmPassword);

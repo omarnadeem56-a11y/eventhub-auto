@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { test } from '../fixtures';
+import { createUser } from '../test-data/users';
 
 test.describe('Register page', () => {
   test.beforeEach(async ({ registerPage }) => {
@@ -20,11 +21,7 @@ test.describe('Register page', () => {
 
   test('registers a new user', async ({ page, registerPage, navBar }) => {
     const password = 'Lantern7^Quiet!Fig';
-    const user = {
-      email: `omar+${Date.now()}@test.com`,
-      password,
-      confirmPassword: password,
-    };
+    const user = createUser();
     await registerPage.register(user);
     await expect(page).toHaveURL('/');
     await expect(navBar.logoutButton).toBeVisible();
