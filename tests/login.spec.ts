@@ -1,22 +1,13 @@
-import { expect } from '@playwright/test';
-import { test } from '../fixtures';
+import { test, expect } from '../fixtures';
+import { createUser } from '../test-data/users';
 
-class LoginDetails {
-  readonly email: string;
-  readonly password: string;
-
-  constructor(password: string, email: string = `omar+${Date.now()}@test.com`) {
-    this.email = email;
-    this.password = password;
-  }
-}
 
 test.describe('Login page', () => {
     test.beforeEach(async ({ loginPage }) => {
     await loginPage.goto();
   });
 
-  test('login page loads', async ({ page, loginPage: _ }) => {
+  test('login page loads', async ({ page }) => {
     await expect(page).toHaveTitle(/EventHub/);
     await expect(page).toHaveURL('/login');
   });
@@ -28,19 +19,19 @@ test.describe('Login page', () => {
   });
 
   test('sign in button responds to form input', async ({ loginPage }) => {
-    const details = new LoginDetails('password1');
+    const user = createUser();
 
     await expect(loginPage.signInButton).toBeEnabled();
 
-    await loginPage.fillForm(details.email, details.password);
-    await expect(loginPage.emailInput).toHaveValue(details.email);
-    await expect(loginPage.passwordInput).toHaveValue(details.password);
+    await loginPage.fillForm(user.email, user.password);
+    await expect(loginPage.emailInput).toHaveValue(user.email);
+    await expect(loginPage.passwordInput).toHaveValue(user.password);
 
     await expect(loginPage.signInButton).toBeEnabled();
   });
 
   test('shows an error when only the email is filled', async ({ page, loginPage }) => {
-    await loginPage.emailInput.fill('omar@test.com');
+    await loginPage.emailInput.fill('domaintest1@test.com');
     await loginPage.signInButton.click();
 
     await expect(page.getByText('Password must be at least 6 characters')).toBeVisible();
